@@ -110,8 +110,8 @@ async function addChat() {
   try{
     let res = await get(child(dbref,'chats/'+lastChatIndex));
   let chat=await res.val();
-     get(child(dbref, "misc")).then(async (snap) => {
-    currentChatCount = await parseInt(snap.val().currentChatCount);});
+    let data= await get(child(dbref, "misc"));
+    currentChatCount = await data.val().currentChatCount;
     if(lastChatIndex<=currentChatCount)
     {
   if(chat)
