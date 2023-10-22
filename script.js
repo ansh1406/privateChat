@@ -137,8 +137,8 @@ async function addChat() {
         let message = document.createElement('p');
         sender.style.marginLeft = '2%';
         message.style.marginLeft = '2%';
-        sender.textContent = chat.user;
-        message.textContent = chat.chat;
+        sender.textContent = chat.message;
+        message.textContent = chat.username;
         div.appendChild(sender);
         div.appendChild(message);
         chatArea.appendChild(div);
