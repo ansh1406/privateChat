@@ -91,8 +91,8 @@ async function fetchData(path, data) {
     currentChatCount = await parseInt(snap.val().currentChatCount);
     currentChatCount++;
     lastChatIndex=currentChatCount;
-    set(ref(databse, "chats/" + currentChatCount), data);
-    set(ref(database, "misc/"), { currentChatCount: currentChatCount });
+    set(ref(database, "chats/" + currentChatCount), data);
+    set(ref(database, "misc"), { currentChatCount: currentChatCount });
   });
   return 0;
 }
