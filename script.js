@@ -98,7 +98,7 @@ function refreshUid() {
 }
 addChat();
 async function addChat() {
-  if(localSotrage.getItem("username")!="")
+  if(localStorage.getItem("username")!="")
   {
   try{
     let data= await get(child(dbref, "misc"));
