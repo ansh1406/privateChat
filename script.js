@@ -97,7 +97,7 @@ function refreshUid() {
   }
 }
 async function addChat() {
-  if(localStorage.getItem("username")!="")
+  if(localStorage.getItem("username")!=""&&localStorage.getItem("username")!=null)
   {
   try{
     let data= await get(child(dbref, "misc"));
@@ -111,7 +111,7 @@ async function addChat() {
     {
   console.log(chat);
        let div = document.createElement('div');
-        if (chat.user == localStorage.getItem('username')) div.classList.add('chatSent');
+        if (chat.username == localStorage.getItem('username')) div.classList.add('chatSent');
         else div.classList.add('chatRecieved');
         let sender = document.createElement('p');
         let message = document.createElement('p');
