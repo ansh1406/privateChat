@@ -96,7 +96,6 @@ function refreshUid() {
     login.style.display = "none";
   }
 }
-addChat();
 async function addChat() {
   if(localStorage.getItem("username")!="")
   {
