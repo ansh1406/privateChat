@@ -99,12 +99,12 @@ function refreshUid() {
 addChat();
 async function addChat() {
   try{
-    let res = await get(child(dbref,'chats/'+lastChatIndex));
-  let chat=await res.val();
     let data= await get(child(dbref, "misc"));
     currentChatCount = await data.val().currentChatCount;
     if(lastChatIndex<=currentChatCount)
     {
+       let res = await get(child(dbref,'chats/'+lastChatIndex));
+       let chat=await res.val();
       lastChatIndex++;
   if(chat)
     {
