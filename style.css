@@ -1,1 +1,124 @@
+.main {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+#div1 {
+    display: block;
+    width: 100%;
+    position: absolute;
+    bottom:0;
+    border-radius: 20px;
+    background-color: rgb(0,200,150,0.3);
+    min-height:50px;
+    height:8%;
+}
+
+
+.details {
+    display: flex;
+    width:100%;
+    margin-left:2%;
+    overflow-wrap:anywhere;
+    flex-direction: column;
+}
+
+.partition {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0px;
+    border: groove;
+    height: 100%;
+    min-height:100%;
+    max-height: fit-content;
+    position: relative;
+    border-width: 2px;
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
+}
+
+#partition2 {
+    width: 100%;
+    overflow:clip;
+}
+
+#partition1 {
+    width: 20%;
+    display: flex;
+    overflow: hidden;
+}
+
+#chatArea {
+    display: block;
+    width: 100%;
+    max-height:90%;
+    overflow-y: scroll;
+}
+
+.data {
+    color: blue;
+    font-size: smaller;
+    word-wrap:break-word;
+}
+
+#form1 {
+    width: 100%;
+}
+
+.refresh {
+    width: 100%;
+    display: flex;
+    position: absolute;
+    bottom: 0%;
+    height:50px;
+}
+
+#refresh {
+    width: 100%;
+    border:groove;
+    border-radius: 20px;
+    background-color: transparent;
+    overflow-wrap:anywhere;
+}
+
+#send_button {
+    aspect-ratio: 1/1;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    border: groove;
+    border-radius: 100%;
+    background-image: url('Assets/send_button.png');
+    background-size: cover;
+}
+
+.chatRecieved {
+    display: block;
+    border: solid;
+    border-width: 1px;
+    border-color: cadetblue;
+    width: 80%;
+    border-radius: 20px;
+    background-color: antiquewhite;
+    word-wrap: normal;
+    overflow-wrap: anywhere;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+.chatSent {
+    display: block;
+    border: solid;
+    position: relative;
+    border-width: 1px;
+    border-color: antiquewhite;
+    width: 80%;
+    border-radius: 20px;
+    background-color: cadetblue;
+    word-wrap: normal;
+    overflow-wrap: anywhere;
+    margin-left: 18%;
+    margin-top: 2%;
+}
 
