@@ -98,6 +98,8 @@ function refreshUid() {
 }
 addChat();
 async function addChat() {
+  if(localSotrage.getItem("username")!="")
+  {
   try{
     let data= await get(child(dbref, "misc"));
     currentChatCount = await data.val().currentChatCount;
@@ -116,8 +118,8 @@ async function addChat() {
         let message = document.createElement('p');
         sender.style.marginLeft = '2%';
         message.style.marginLeft = '2%';
-        sender.textContent = chat.message;
-        message.textContent = chat.username;
+        sender.textContent = chat.username;
+        message.textContent = chat.message;
         div.appendChild(sender);
         div.appendChild(message);
         chatArea.appendChild(div);
@@ -125,6 +127,8 @@ async function addChat() {
   }
   }
    catch(error) {console.log(error);}
+  }
+  else location.href='login.html';
 }
 setInterval(addChat, 1000);
 
