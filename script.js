@@ -58,7 +58,7 @@ submit.addEventListener("submit", async function (event) {
   event.preventDefault();
   if (!localStorage.getItem("username")) {
     alert("No running account found! Pleas login");
-    location.href = "/login.html";
+    location.href = "login.html";
   } else {
     let username = localStorage.getItem("username");
     var field = event.target.getElementsByTagName("input");
@@ -106,7 +106,7 @@ logout.addEventListener("click", function (event) {
   }
 });
 login.addEventListener("click", (event) => {
-  location.href = "/login.html";
+  location.href = "login.html";
 });
 function refreshUid() {
   uid.innerHTML = localStorage.getItem("username");
