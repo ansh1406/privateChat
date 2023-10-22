@@ -1,6 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-analytics.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js"
+import {
+  getDatabase,
+  ref,
+  child,
+  get,
+  set,
+} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,43 +20,60 @@ const firebaseConfig = {
   storageBucket: "webapp-8afc9.appspot.com",
   messagingSenderId: "153657818080",
   appId: "1:153657818080:web:72c66046039ac28a20c985",
-  measurementId: "G-8G8G7P4NYV"
+  measurementId: "G-8G8G7P4NYV",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const database = getDatabase(app);
+var dbref = ref(database);
+get(child(dbref, "a/d/")).then((snap) => {
+  console.log(snap.val());
+});
+set(ref(database, "a/m"), {
+  name: "ansh",
+});
 
 var submit = document.getElementById("form1");
-var logout = document.getElementById('logout');
-var login = document.getElementById('login');
-var uid = document.getElementById('uid');
-var chatArea = document.getElementById('chatArea');
-var currentChatCount = 0;
-uid.innerHTML=firebaseConfig.projectId;
+var logout = document.getElementById("logout");
+var login = document.getElementById("login");
+var uid = document.getElementById("uid");
+var chatArea = document.getElementById("chatArea");
+var lastChatIndex=0;
+var currentChatCount = 100;
+getChatCount();
+async function getChatCount() {
+  get(child(dbref, "misc")).then(async (snap) => {
+    currentChatCount = await parseInt(snap.val().currentChatCount);
+    console.log(currentChatCount);
+  });
+}
+
+uid.innerHTML = firebaseConfig.projectId;
 refreshUid();
-addChat();
-submit.addEventListener('submit', async function (event) {
-    event.preventDefault();
-    if (!localStorage.getItem('username')) {
-        alert('No running account found! Pleas login');
-        location.href = '/login.html';
-    }
-    else {
-        let username = localStorage.getItem('username');
-        var field = event.target.getElementsByTagName('input');
-        var message = field[0].value.toString();
-        var data = {
-            'message': message,
-            'username': username
-        };
-        let res = await fetchData('/chat', data);
-        addChat();
-        field[0].value = '';
-    }
+//addChat();
+
+submit.addEventListener("submit", async function (event) {
+  event.preventDefault();
+  if (!localStorage.getItem("username")) {
+    alert("No running account found! Pleas login");
+    location.href = "/login.html";
+  } else {
+    let username = localStorage.getItem("username");
+    var field = event.target.getElementsByTagName("input");
+    var message = field[0].value.toString();
+    var data = {
+      message: message,
+      username: username,
+    };
+    let res = await fetchData("/chat", data);
+    addChat();
+    field[0].value = "";
+  }
 });
 async function fetchData(path, data) {
-    try {
+  /*  try {
         let res = await fetch(path, {
             method: 'POST',
             headers: {
@@ -63,56 +86,65 @@ async function fetchData(path, data) {
     }
     catch (error) {
         console.log(error);
-    }
+    }*/
+  get(child(dbref, "misc")).then(async (snap) => {
+    currentChatCount = await parseInt(snap.val().currentChatCount);
+    currentChatCount++;
+    lastChatIndex=currentChatCount;
+    set(ref(databse, "chats/" + currentChatCount), data);
+    set(ref(database, "misc/"), { currentChatCount: currentChatCount });
+  });
+  return 0;
 }
 
-logout.addEventListener('click', function (event) {
-    if (localStorage.getItem('username')) {
-        let username = localStorage.getItem('username');
-        localStorage.setItem('username', "");
-        fetchData('/logout_alert', { 'username': username });
-        refreshUid();
-    }
+logout.addEventListener("click", function (event) {
+  if (localStorage.getItem("username")) {
+    let username = localStorage.getItem("username");
+    localStorage.setItem("username", "");
+    fetchData("/logout_alert", { username: username });
+    refreshUid();
+  }
 });
-login.addEventListener('click', (event) => {
-    location.href = '/login.html'
-})
+login.addEventListener("click", (event) => {
+  location.href = "/login.html";
+});
 function refreshUid() {
-    uid.innerHTML = localStorage.getItem('username');
-    if (uid.innerHTML == '') {
-        uid.innerHTML = 'No user found';
-        logout.style.display = 'none';
-        login.style.display = 'block';
-    }
-    else {
-        logout.style.display = 'block';
-        login.style.display = 'none';
-    }
+  uid.innerHTML = localStorage.getItem("username");
+  if (uid.innerHTML == "") {
+    uid.innerHTML = "No user found";
+    logout.style.display = "none";
+    login.style.display = "block";
+  } else {
+    logout.style.display = "block";
+    login.style.display = "none";
+  }
 }
+addChat();
 async function addChat() {
    // chatArea.innerHTML = "";
-    let res = await fetch('/getChat', {
-        method: "POST",
-        headers: {
-            'content-type':'application/json'
-        },
-        body: JSON.stringify({ 'chatCount': currentChatCount })
-    });
-    let chats = await res.json();
-    for (chat in chats) {
-        let div = document.createElement('div');
-        if (chats[chat].user == localStorage.getItem('username')) div.classList.add('chatSent');
+  try{
+    let res = await get(child(dbref,'chats/'+lastChatIndex));
+ 
+  let chat=await res.val();
+  if(chat)
+    {
+  console.log(chat);
+  lastChatIndex++;
+       let div = document.createElement('div');
+        if (chat.user == localStorage.getItem('username')) div.classList.add('chatSent');
         else div.classList.add('chatRecieved');
         let sender = document.createElement('p');
         let message = document.createElement('p');
         sender.style.marginLeft = '2%';
         message.style.marginLeft = '2%';
-        sender.textContent = chats[chat].user;
-        message.textContent = chats[chat].chat;
+        sender.textContent = chat.user;
+        message.textContent = chat.chat;
         div.appendChild(sender);
         div.appendChild(message);
         chatArea.appendChild(div);
-        currentChatCount++;
-    }
+    } 
+  }
+   catch(error) {console.log(error);}
 }
-setInterval(addChat, 1000);
+setInterval(addChat, 2000);
+
