@@ -28,12 +28,6 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const database = getDatabase(app);
 var dbref = ref(database);
-get(child(dbref, "a/d/")).then((snap) => {
-  console.log(snap.val());
-});
-set(ref(database, "a/m"), {
-  name: "ansh",
-});
 
 var submit = document.getElementById("form1");
 var logout = document.getElementById("logout");
@@ -52,8 +46,6 @@ async function getChatCount() {
 
 uid.innerHTML = firebaseConfig.projectId;
 refreshUid();
-//addChat();
-
 submit.addEventListener("submit", async function (event) {
   event.preventDefault();
   if (!localStorage.getItem("username")) {
@@ -106,7 +98,6 @@ function refreshUid() {
 }
 addChat();
 async function addChat() {
-   // chatArea.innerHTML = "";
   try{
     let res = await get(child(dbref,'chats/'+lastChatIndex));
   let chat=await res.val();
@@ -114,10 +105,10 @@ async function addChat() {
     currentChatCount = await data.val().currentChatCount;
     if(lastChatIndex<=currentChatCount)
     {
+      lastChatIndex++;
   if(chat)
     {
   console.log(chat);
-  lastChatIndex++;
        let div = document.createElement('div');
         if (chat.user == localStorage.getItem('username')) div.classList.add('chatSent');
         else div.classList.add('chatRecieved');
@@ -135,5 +126,5 @@ async function addChat() {
   }
    catch(error) {console.log(error);}
 }
-setInterval(addChat, 2000);
+setInterval(addChat, 1000);
 
