@@ -1,1 +1,36 @@
+<html>
+<head>
+    <title>node js server</title>
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel=" stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="main">
+        <div class="partition" id="partition1">
+            <div class=" details">
+                <p class="data">Current User :  </p>
+                <p id="uid" class="data"></p>
 
+            </div>
+            <div class="details">
+                <p id="logout" class="data"><u>Logout</u></p>
+                <p id="login" class="data"><u>Login</u></p>
+            </div>
+            <div class="refresh">
+                <button id="refresh" onclick="addChat()">Refresh Chat</button>
+            </div>
+
+        </div>
+        <div class="partition" id="partition2">
+            <div id="chatArea"></div>
+            <div id="div1">
+                <form id="form1">
+                    <input type="text" placeholder="Message" style="width:100%; height:100%;border:groove;border-radius:20px" />
+                    <input type="submit" value="" id="send_button" />
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="client.js"></script>
+</body>
+</html>
