@@ -109,8 +109,11 @@ async function addChat() {
    // chatArea.innerHTML = "";
   try{
     let res = await get(child(dbref,'chats/'+lastChatIndex));
- 
   let chat=await res.val();
+     get(child(dbref, "misc")).then(async (snap) => {
+    currentChatCount = await parseInt(snap.val().currentChatCount);});
+    if(lastChatIndex<=currentChatCount)
+    {
   if(chat)
     {
   console.log(chat);
@@ -128,6 +131,7 @@ async function addChat() {
         div.appendChild(message);
         chatArea.appendChild(div);
     } 
+  }
   }
    catch(error) {console.log(error);}
 }
