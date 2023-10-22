@@ -73,24 +73,9 @@ submit.addEventListener("submit", async function (event) {
   }
 });
 async function fetchData(path, data) {
-  /*  try {
-        let res = await fetch(path, {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        var result = await res.json();
-        return result;
-    }
-    catch (error) {
-        console.log(error);
-    }*/
   get(child(dbref, "misc")).then(async (snap) => {
     currentChatCount = await parseInt(snap.val().currentChatCount);
     currentChatCount++;
-    lastChatIndex=currentChatCount;
     set(ref(database, "chats/" + currentChatCount), data);
     set(ref(database, "misc"), { currentChatCount: currentChatCount });
   });
