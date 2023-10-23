@@ -6,6 +6,7 @@ import {
   child,
   get,
   set,
+  remove,
 } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,6 +37,7 @@ var uid = document.getElementById("uid");
 var chatArea = document.getElementById("chatArea");
 var sessionCode='';
 var startSession= document.getElementById("startSession");
+var endSession= document.getElementById("endSession");
 var sessionDisplay = document.getElementById("sessionDisplay");
 var lastChatIndex=0;
 var currentChatCount = 0;
@@ -54,6 +56,14 @@ startSession.addEventListener('click',async function(event){
   }
    sessionDisplay.innerHTML='#'+sessionCode;
 });
+endSession.addEventListener('click',async function(event){
+      lastChatIndex=0;
+      currentChatCount=0;
+      remove(ref(database,sessionCode));
+      sessionCode='';
+      sessionDisplay.innerHTML='';
+      chatArea.innerHTML='';
+})
 
 refreshUid();
 submit.addEventListener("submit", async function (event) {
@@ -70,14 +80,14 @@ submit.addEventListener("submit", async function (event) {
       message: message,
       username: username,
     };
-    let res = await fetchData("/chat", data);
+    let res = await fetchData(data);
     addChat();
     field[0].value = "";
   }
   else alert("No Running Session Found");
   }
 });
-async function fetchData(path, data) {
+async function fetchData(data) {
   get(child(dbref, sessionCode+"/misc")).then(async (snap) => {
     currentChatCount =  parseInt(snap.val().currentChatCount);
     currentChatCount++;
@@ -115,6 +125,8 @@ async function addChat() {
     if(sessionCode!=''){
   try{
     let data= await get(child(dbref, sessionCode+"/misc"));
+    if(data.val())
+    {
     currentChatCount = await data.val().currentChatCount;
     if(lastChatIndex<=currentChatCount)
     {
@@ -139,6 +151,18 @@ async function addChat() {
     } 
   }
   }
+  else {
+    if(sessionCode!='')
+    {
+    chatArea.innerHTML='';
+    alert("Session Terminated");
+    lastChatIndex=0;
+    currentChatCount=0;
+    sessionCode='';
+    sessionDisplay.innerHTML='';
+    }
+  }
+}
    catch(error) {console.log(error);}
   }
 }
