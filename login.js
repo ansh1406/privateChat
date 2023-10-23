@@ -36,7 +36,7 @@ loginForm.addEventListener('submit',async function(event){
   let password = event.target.getElementsByTagName('input')[1].value.toString();
   let credential = await get(child(dbref,'auth/'+username));
   let realPassword = await credential.val().password;
-  if(realPassword){
+  if(realPassword!=null&& realPassword!=""){
   if(password==realPassword){
     localStorage.setItem('username',username);
     location.href='index.html';

@@ -49,7 +49,7 @@ refreshUid();
 submit.addEventListener("submit", async function (event) {
   event.preventDefault();
   if (!localStorage.getItem("username")) {
-    alert("No running account found! Pleas login");
+    alert("No running account found! Please login");
     location.href = "login.html";
   } else {
     let username = localStorage.getItem("username");
