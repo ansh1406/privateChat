@@ -77,7 +77,7 @@ async function fetchData(path, data) {
   get(child(dbref, sessionCode+"/misc")).then(async (snap) => {
     currentChatCount =  parseInt(snap.val().currentChatCount);
     currentChatCount++;
-    set(ref(database, "chats/" +sessionCode+'/chats/'+currentChatCount), data);
+    set(ref(database, sessionCode+'/chats/'+currentChatCount), data);
     set(ref(database, sessionCode+"/misc"), { currentChatCount: currentChatCount });
   });
   return 0;
