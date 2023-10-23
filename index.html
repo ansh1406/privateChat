@@ -10,11 +10,17 @@
             <div class=" details">
                 <p class="data">Current User :  </p>
                 <p id="uid" class="data"></p>
+                <p id = "sessionDisplay" class="data"></p>
 
             </div>
             <div class="details">
                 <p id="logout" class="data"><u>Logout</u></p>
                 <p id="login" class="data"><u>Login</u></p>
+            </div>
+            <div class="details">
+                <input type="text" placeholder="Session Code" id="sessionCode"/>
+                <button id="sessionStart">Start Session</button>
+                <button id="sessionEnd">End Session</button>
             </div>
             <div class="refresh">
                 <button id="refresh" onclick="addChat()">Refresh Chat</button>

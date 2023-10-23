@@ -34,17 +34,22 @@ var logout = document.getElementById("logout");
 var login = document.getElementById("login");
 var uid = document.getElementById("uid");
 var chatArea = document.getElementById("chatArea");
+var sessionCode='';
+var startSession= document.getElementById("startSession");
+var sessionDisplay = document.getElementById("sessionDisplay");
+startSession.addEventListener('click',async function(event){
+   sessionCode = document.getElementById("sessionCode").value.toString();
+   if(sessionCode!='')
+   {
+   chatArea.innerHTML='';
+   lastChatIndex=0;
+   currentChatCount=0;
+  let data= await set(ref(database,sessionCode+'/misc'),{currentChatCount:0});
+   }
+   sessionDisplay.innerHTML='#'+sessionCode;
+});
 var lastChatIndex=0;
-var currentChatCount = 100;
-getChatCount();
-async function getChatCount() {
-  get(child(dbref, "misc")).then(async (snap) => {
-    currentChatCount = await parseInt(snap.val().currentChatCount);
-    console.log(currentChatCount);
-  });
-}
-
-uid.innerHTML = firebaseConfig.projectId;
+var currentChatCount = 0;
 refreshUid();
 submit.addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -52,6 +57,7 @@ submit.addEventListener("submit", async function (event) {
     alert("No running account found! Please login");
     location.href = "login.html";
   } else {
+    if(sessionCode!=''){
     let username = localStorage.getItem("username");
     var field = event.target.getElementsByTagName("input");
     var message = field[0].value.toString();
@@ -63,13 +69,15 @@ submit.addEventListener("submit", async function (event) {
     addChat();
     field[0].value = "";
   }
+  else alert("No Running Session Found");
+  }
 });
 async function fetchData(path, data) {
   get(child(dbref, "misc")).then(async (snap) => {
     currentChatCount = await parseInt(snap.val().currentChatCount);
     currentChatCount++;
-    set(ref(database, "chats/" + currentChatCount), data);
-    set(ref(database, "misc"), { currentChatCount: currentChatCount });
+    set(ref(database, "chats/" +sessionCode+'/'+currentChatCount), data);
+    set(ref(database, sessionCode+"/misc"), { currentChatCount: currentChatCount });
   });
   return 0;
 }
@@ -99,12 +107,13 @@ function refreshUid() {
 async function addChat() {
   if(localStorage.getItem("username")!=""&&localStorage.getItem("username")!=null)
   {
+    if(sessionCode!=''){
   try{
-    let data= await get(child(dbref, "misc"));
+    let data= await get(child(dbref, sessionCode+"/misc"));
     currentChatCount = await data.val().currentChatCount;
     if(lastChatIndex<=currentChatCount)
     {
-       let res = await get(child(dbref,'chats/'+lastChatIndex));
+       let res = await get(child(dbref,sessionCode+'/chats/'+lastChatIndex));
        let chat=await res.val();
       lastChatIndex++;
   if(chat)
@@ -127,6 +136,7 @@ async function addChat() {
   }
    catch(error) {console.log(error);}
   }
+}
   else location.href='login.html';
 }
 setInterval(addChat, 1000);
