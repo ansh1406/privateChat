@@ -37,6 +37,8 @@ var chatArea = document.getElementById("chatArea");
 var sessionCode='';
 var startSession= document.getElementById("startSession");
 var sessionDisplay = document.getElementById("sessionDisplay");
+var lastChatIndex=0;
+var currentChatCount = 0;
 startSession.addEventListener('click',async function(event){
    sessionCode = document.getElementById("sessionCode").value.toString();
    if(sessionCode!='')
@@ -48,8 +50,7 @@ startSession.addEventListener('click',async function(event){
    }
    sessionDisplay.innerHTML='#'+sessionCode;
 });
-var lastChatIndex=0;
-var currentChatCount = 0;
+
 refreshUid();
 submit.addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -73,10 +74,10 @@ submit.addEventListener("submit", async function (event) {
   }
 });
 async function fetchData(path, data) {
-  get(child(dbref, "misc")).then(async (snap) => {
-    currentChatCount = await parseInt(snap.val().currentChatCount);
+  get(child(dbref, sessionCode+"/misc")).then(async (snap) => {
+    currentChatCount =  parseInt(snap.val().currentChatCount);
     currentChatCount++;
-    set(ref(database, "chats/" +sessionCode+'/'+currentChatCount), data);
+    set(ref(database, "chats/" +sessionCode+'/chats/'+currentChatCount), data);
     set(ref(database, sessionCode+"/misc"), { currentChatCount: currentChatCount });
   });
   return 0;
