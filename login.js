@@ -35,14 +35,15 @@ loginForm.addEventListener('submit',async function(event){
   let username = event.target.getElementsByTagName('input')[0].value.toString();
   let password = event.target.getElementsByTagName('input')[1].value.toString();
   let credential = await get(child(dbref,'auth/'+username));
-  let realPassword = await credential.val().password;
-  if(realPassword!=null&& realPassword!=""){
-  if(password==realPassword){
-    localStorage.setItem('username',username);
-    location.href='index.html';
+  if(credential.val())
+  {
+    let realPassword = await credential.val().password;
+    if(password==realPassword){
+      localStorage.setItem('username',username);
+      location.href='index.html';
+    }
+    else alert("Password Incorrect");
   }
-  else alert("Password Incorrect");
-}
   else alert("UserID Incorrect");
  
 });
