@@ -46,8 +46,12 @@ startSession.addEventListener('click',async function(event){
    chatArea.innerHTML='';
    lastChatIndex=0;
    currentChatCount=0;
-  let data= await set(ref(database,sessionCode+'/misc'),{currentChatCount:0});
+   let thisSession = await get(child(dbref,sessionCode+'/misc'));
+   if(!thisSession.val())
+   {
+   let data= await set(ref(database,sessionCode+'/misc'),{currentChatCount:0});
    }
+  }
    sessionDisplay.innerHTML='#'+sessionCode;
 });
 
