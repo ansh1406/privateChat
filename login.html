@@ -1,14 +1,19 @@
-<html>
-  <head>
-  </head>
-  <body>
-    <div style='display:flex;flex-direction: column;'>
-    <form id="loginForm">
-      <input type="text" placeholder="Username">
-      <input type="password" placeholder="Password">
-      <input type="submit" value="Login" >
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+<body>
+  <div style="display: flex; flex-direction: column; align-items: center; margin-top: 50px;">
+    <form id="loginForm" autocomplete="off">
+      <input type="text" placeholder="Username" required><br>
+      <input type="password" placeholder="Password" required><br>
+      <input type="submit" value="Login">
     </form>
-    </div>
-  </body>
-  <script src="login.js" type="module"></script>
+  </div>
+
+  <script type="module" src="login.js"></script>
+</body>
 </html>
