@@ -6,34 +6,38 @@
   <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin:0; height:100vh; background:#f7f8fa;">
-  <div class="main">
-    <div id="partition1" class="partition">
+<body style="margin: 0; height: 100vh; background: #f7f8fa;">
+  <main class="main">
+    <!-- Left partition (Sidebar / User List) -->
+    <section id="partition1" class="partition">
       <!-- Sidebar or user list can go here -->
-    </div>
-    <div id="partition2" class="partition">
+    </section>
+
+    <!-- Right partition (Chat Area) -->
+    <section id="partition2" class="partition">
       <div id="chatArea">
-        <div class="chatRecieved">
+        <div class="chatReceived">
           <div class="details">
-            <span class="data">Friend: Hello! How are you?</span>
+            <span class="data"><strong>Friend:</strong> Hello! How are you?</span>
           </div>
         </div>
+
         <div class="chatSent">
           <div class="details">
-            <span class="data">You: I'm good, thanks! How about you?</span>
+            <span class="data"><strong>You:</strong> I'm good, thanks! How about you?</span>
           </div>
         </div>
-        <!-- More chat bubbles as needed -->
+
+        <!-- Additional chat messages will be added dynamically -->
       </div>
+
       <div id="div1">
         <form id="form1" autocomplete="off">
           <div class="refresh">
-            <input id="refresh" type="text" placeholder="Type your message..." />
-            <button id="send_button" type="submit"></button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
+            <input 
+              id="refresh" 
+              type="text" 
+              placeholder="Type your message..." 
+              aria-label="Type your message"
+            >
+            <button 
