@@ -7,11 +7,8 @@ import {
   get,
   set,
 } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBy1a49YwgPzeykKEZpSZoTGLBWmu4LQpA",
   authDomain: "webapp-8afc9.firebaseapp.com",
@@ -27,23 +24,36 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const database = getDatabase(app);
-var dbref = ref(database);
+const dbRef = ref(database);
 
-let loginForm =document.getElementById("loginForm");
-loginForm.addEventListener('submit',async function(event){
+// Handle login form
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  let username = event.target.getElementsByTagName('input')[0].value.toString();
-  let password = event.target.getElementsByTagName('input')[1].value.toString();
-  let credential = await get(child(dbref,'auth/'+username));
-  if(credential.val())
-  {
-    let realPassword = await credential.val().password;
-    if(password==realPassword){
-      localStorage.setItem('username',username);
-      location.href='index.html';
+
+  // Retrieve username and password inputs
+  const [usernameInput, passwordInput] = event.target.getElementsByTagName("input");
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
+
+  try {
+    const credentialSnapshot = await get(child(dbRef, "auth/" + username));
+
+    if (credentialSnapshot.exists()) {
+      const realPassword = credentialSnapshot.val().password;
+
+      if (password === realPassword) {
+        localStorage.setItem("username", username);
+        window.location.href = "index.html";
+      } else {
+        alert("Password incorrect");
+      }
+    } else {
+      alert("User ID incorrect");
     }
-    else alert("Password Incorrect");
+  } catch (error) {
+    console.error("Error accessing database:", error);
+    alert("An error occurred while logging in. Please try again.");
   }
-  else alert("UserID Incorrect");
- 
 });
